@@ -1,12 +1,22 @@
 import React, { useState } from "react";
 
-const Task = () => {
-  const [task, setTask] = useState("");
+const AddTask = () => {
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const [taskDeadline, setTaskDeadline] = useState("");
+  const [taskStatus, setTaskStatus] = useState("TO DO");
+  const [taskPriority, setTaskPriority] = useState("");
+  const [taskFile, setTaskFile] = useState(null);
+  const [taskAssign, setTaskAssign] = useState("");
+  // const [task, setTask] = useState("")
   const [tasks, setTasks] = useState([]);
   const [newComment, setNewComment] = useState(""); // State for the comment input
   const [editingCommentId, setEditingCommentId] = useState(null); // To track editing state of comments
   const [editedCommentText, setEditedCommentText] = useState(""); // Edited comment text
 
+  const handleFileChange = (event) => {
+    setTaskFile(event.target.files[0]); // Save the file object
+  };
   // Simulated Logged-in User Info (Replace with real authentication)
   const user = {
     name: "John Doe",
@@ -15,11 +25,31 @@ const Task = () => {
 
   const reactionsList = ["👍", "❤️", "😂"];
 
-  const handleAddTask = () => {
-    if (task.trim() === "") return;
-    setTasks([...tasks, { taskText: task, comments: [], reactions: {} }]);
-    setTask("");
+  const handleAddTask = (e) => {
+    e.preventDefault();
+    if (taskTitle.trim() === "") return;
+    const newTask = {
+      taskTitle,
+      taskDescription,
+      taskDeadline,
+      taskStatus,
+      taskPriority,
+      taskFile,
+      taskAssign,
+      comments: [],
+      reactions: {},
+    };
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+    setTaskTitle("");
+    setTaskDescription("");
+    setTaskDeadline("");
+    setTaskStatus("TO DO");
+    setTaskPriority("");
+    setTaskFile(null);
+    setTaskAssign("");
+    console.log(newTask)
   };
+  
 
   const handleDeleteTask = (index) => {
     setTasks(tasks.filter((_, i) => i !== index));
@@ -144,27 +174,91 @@ const Task = () => {
   return (
     <div className="max-w-md mx-auto p-4 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold mb-4">Task Manager</h2>
-      <div className="flex mb-4">
+      <form onSubmit={handleAddTask} className="flex mb-4 flex-col">
+        <div className="flex flex-col">
+        <label>Task Title</label>
         <input
           type="text"
-          value={task}
-          onChange={(e) => setTask(e.target.value)}
+          value={taskTitle}
+          onChange={(e) => setTaskTitle(e.target.value)}
           className="flex-1 p-2 border rounded-md"
-          placeholder="Enter a new task"
+          placeholder="Enter task name"
         />
+        </div>
+        <div className="flex flex-col">
+        <label>Task description</label>
+        <input
+          type="text"
+          value={taskDescription}
+          onChange={(e) => setTaskDescription(e.target.value)}
+          className="flex-1 p-2 border rounded-md"
+          placeholder="Enter task description"
+        />
+        </div>
+        <div className="flex flex-col">
+        <label>Task deadline</label>
+        <input
+          type="date"
+          value={taskDeadline}
+          onChange={(e) => setTaskDeadline(e.target.value)}
+          className="flex-1 p-2 border rounded-md"
+        />
+        </div>
+        <div className="flex flex-col">
+  <label>Task Status</label>
+  <select
+    value={taskStatus}
+    onChange={(e) => setTaskStatus(e.target.value)}
+    className="flex-1 p-2 border rounded-md"
+  >
+    <option value="TO DO">TO DO</option>
+    <option value="IN PROGRESS">IN PROGRESS</option>
+    <option value="DONE">DONE</option>
+  </select>
+</div>
+
+        <div className="flex flex-col">
+  <label>Task Priority</label>
+  <select
+    value={taskPriority}
+    onChange={(e) => setTaskPriority(e.target.value)}
+    className="flex-1 p-2 border rounded-md"
+  >
+    <option value="">Select Task Priority</option>
+    <option value="LOW">Low</option>
+    <option value="MEDIUM">Medium</option>
+    <option value="HIGH">High</option>
+  </select>
+</div>
+
+        <div className="flex flex-col">
+        <label>Upload File</label>
+        <input type="file" onChange={handleFileChange} />
+      {taskFile && <p>Selected file: {taskFile.name}</p>}
+        </div>
+        <div className="flex flex-col">
+        <label>Task Assign</label>
+        <input
+          type="text"
+          value={taskAssign}
+          onChange={(e) => setTaskAssign(e.target.value)}
+          className="flex-1 p-2 border rounded-md"
+          placeholder="Enter an user name"
+        />
+        </div>
+
         <button
-          onClick={handleAddTask}
-          className="ml-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+          className="ml-2 mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
         >
           Add Task
         </button>
-      </div>
+      </form>
 
       <ul className="list-none">
         {tasks.map((taskItem, index) => (
           <li key={index} className="flex flex-col p-4 border-b">
             <div className="flex justify-between items-center">
-              <span className="font-semibold">{taskItem.taskText}</span>
+              <span className="font-semibold">{taskItem.taskTitle}</span>
               <button
                 onClick={() => handleDeleteTask(index)}
                 className="ml-2 text-red-500 hover:text-red-700"
@@ -289,4 +383,4 @@ const Task = () => {
   );
 };
 
-export default Task;
+export default AddTask;
