@@ -7,6 +7,7 @@ function Navbar() {
       <Link to="/register"><button className='btn bg-pink-500 text-white'>Register</button></Link>
       <Link to="/login"><button className='btn bg-pink-500 text-white'>Login</button></Link>
       <Link to="/add-task"><button className='btn bg-pink-500 text-white'>Add Task</button></Link>
+      <Link to="/all-task"><button className='btn bg-pink-500 text-white'>All Task</button></Link>
     </div>
   )
 }

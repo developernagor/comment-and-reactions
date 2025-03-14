@@ -5,6 +5,7 @@ import Register from "./components/Register"
 import Login from "./components/Login"
 import AddTask from "./pages/AddTask/AddTask"
 import AllTask from "./pages/AllTask/AllTask"
+import ViewDetails from "./pages/ViewDetails/ViewDetails"
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/register" element={<Register></Register>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/all-task" element={<AllTask></AllTask>}></Route>
+        <Route path="/task/view-details" element={<ViewDetails></ViewDetails>}></Route>
         </Route>
       </Routes>
     </>
