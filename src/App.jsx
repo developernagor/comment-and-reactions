@@ -19,7 +19,7 @@ function App() {
         <Route path="/register" element={<Register></Register>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/all-task" element={<AllTask></AllTask>}></Route>
-        <Route path="/task/view-details" element={<ViewDetails></ViewDetails>}></Route>
+        <Route path="/task/:id" element={<ViewDetails></ViewDetails>}></Route>
         <Route path="/profile" element={<Profile></Profile>}></Route>
         </Route>
       </Routes>
