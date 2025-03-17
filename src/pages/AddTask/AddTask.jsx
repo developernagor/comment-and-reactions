@@ -25,7 +25,7 @@ const AddTask = () => {
 
   const reactionsList = ["👍", "❤️", "😂"];
 
-  const handleAddTask = (e) => {
+  const handleAddTask = async (e) => {
     e.preventDefault();
     if (taskTitle.trim() === "") return;
     const newTask = {
@@ -36,9 +36,26 @@ const AddTask = () => {
       taskPriority,
       taskFile,
       taskAssign,
-      comments: [],
-      reactions: {},
     };
+
+
+    try {
+      const response = await fetch("http://localhost:5000/add-task", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newTask),
+      });
+  
+      const data = await response.json();
+      console.log("Task added:", data);
+    } catch (error) {
+      console.error("Error adding task:", error);
+    }
+
+
+
     setTasks((prevTasks) => [...prevTasks, newTask]);
     setTaskTitle("");
     setTaskDescription("");
