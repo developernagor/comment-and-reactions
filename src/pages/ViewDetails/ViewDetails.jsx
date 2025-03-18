@@ -10,8 +10,8 @@ function ViewDetails() {
   const {data: task, isLoading, error} = useQuery({
     queryKey:["task", id],
     queryFn: async() => {
-      const response = await axios.get(`http://localhost:5000/task/${id}`);
-      console.log(response)
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/task/${id}`);
+      console.log(response.data)
       return response.data;
     },
   })
@@ -29,12 +29,21 @@ function ViewDetails() {
     taskDeadline = 'No deadline set',
     taskPriority = 'Not specified',
     taskStatus = 'No status available',
+    taskImage="No image file"
   } = task || {};
 
 
   return (
     <div className="task-container border p-4">
-      <div className="task-image border w-10/12 mx-auto m-2">Task Image</div>
+
+<div className="task-image w-10/12 mx-auto my-4 flex justify-center">
+  {taskImage && taskImage !== "No image file" ? (
+    <img src={taskImage} alt="Task" className="max-w-full h-auto rounded-lg shadow-md" />
+  ) : (
+    <p className="text-gray-500">No image available</p>
+  )}
+</div>
+      
       <div className="task-content border p-4">
         <table className="w-10/12 border-collapse">
         <tbody>

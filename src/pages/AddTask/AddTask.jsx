@@ -14,6 +14,7 @@ const AddTask = () => {
   const [loading, setLoading] = useState(false);
 
   const handleImageChange = (e) => {
+    console.log(e.target.files[0])
     setTaskFile(e.target.files[0]);
   };
 
@@ -41,7 +42,7 @@ const AddTask = () => {
           return;
         }
 
-        imageUrl = result.data?.url;
+        imageUrl = result.data?.display_url;
       } catch (error) {
         console.error("Error uploading image:", error);
       }
@@ -69,7 +70,7 @@ if (new Date(taskDeadline) < today) {
     console.log(newTask);
 
     try {
-      const response = await fetch("http://localhost:5000/add-task", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/add-task`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

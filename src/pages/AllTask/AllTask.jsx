@@ -8,7 +8,7 @@ function AllTask() {
   const { data: tasks = [], isLoading, error } = useQuery({
     queryKey: ["tasks"],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:5000/tasks");
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/tasks`);
       return response.data;
     },
   });
