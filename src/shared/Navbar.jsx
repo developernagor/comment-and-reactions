@@ -5,7 +5,7 @@ function Navbar() {
   const user = {
     userName: "Mehedi",
     userEmail: "developernagor@gmail.com",
-    userPhoto:""
+    userPhoto:"https://ibb.co.com/3YNthfZ"
   };
 
   return (

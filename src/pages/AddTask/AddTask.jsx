@@ -1,9 +1,20 @@
 import React, { useState } from "react";
+import { Mention, MentionsInput } from "react-mentions";
+import Swal from "sweetalert2";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const AddTask = () => {
+
+  const users = [
+    { id: "1", display: "Mehedi" },
+    { id: "2", display: "Hassan" },
+    { id: "3", display: "Nagor" },
+    { id: "4", display: "Jarin" },
+  ];
+
+
   const [taskTitle, setTaskTitle] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [taskDeadline, setTaskDeadline] = useState("");
@@ -14,7 +25,6 @@ const AddTask = () => {
   const [loading, setLoading] = useState(false);
 
   const handleImageChange = (e) => {
-    console.log(e.target.files[0])
     setTaskFile(e.target.files[0]);
   };
 
@@ -67,7 +77,6 @@ if (new Date(taskDeadline) < today) {
       taskAssign,
       taskImage: imageUrl,
     };
-    console.log(newTask);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_API_URL}/add-task`, {
@@ -80,6 +89,15 @@ if (new Date(taskDeadline) < today) {
 
       const data = await response.json();
       console.log("Task added:", data);
+      setLoading(false);
+      
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Task added successfully !",
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (error) {
       console.error("Error adding task:", error);
     }
@@ -91,6 +109,7 @@ if (new Date(taskDeadline) < today) {
     setTaskPriority("");
     setTaskFile(null);
     setTaskAssign("");
+    
     // console.log(newTask)
   };
 
@@ -170,16 +189,24 @@ if (new Date(taskDeadline) < today) {
           />
         </div>
 
+        
+        {/* Mention Input */}
         <div className="flex flex-col">
-          <label>Task Assign</label>
-          <input
-            type="text"
+          <label className="font-semibold">Assign Task To</label>
+          <MentionsInput
             value={taskAssign}
-            onChange={(e) => setTaskAssign(e.target.value)}
-            className="flex-1 p-2 border rounded-md"
-            placeholder="Enter an user name"
-            required
-          />
+            onChange={(event, newValue) => setTaskAssign(newValue)}
+            className="border border-gray-300 p-2 rounded-md w-full"
+            placeholder="Type @ to mention your team member"
+          >
+            <Mention
+            trigger="@"
+            data={users}
+            displayTransform={(id, display) => `${display}`}
+            markup="@__display__"
+            
+            />
+          </MentionsInput>
         </div>
 
         <button
