@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import React from 'react';
+import Countdown from 'react-countdown';
 import { useParams } from 'react-router';
 
 function ViewDetails() {
@@ -32,6 +33,23 @@ function ViewDetails() {
     taskImage="No image file"
   } = task || {};
 
+// Convert deadline to a valid Date object for Countdown
+  const deadlineDate = taskDeadline ? new Date(taskDeadline) : null;
+
+  const countdownRenderer = ({ years, months, days, hours, minutes, seconds, completed }) => {
+    if (completed) {
+      return <p className="text-red-500 font-semibold">Deadline Reached!</p>;
+    } else {
+      return (
+        <p className="text-lg font-semibold">
+          {years > 0 && `${years}y `} 
+          {months > 0 && `${months}m `} 
+          {days > 0 && `${days}d `} 
+          {hours}h {minutes}m {seconds}s
+        </p>
+      );
+    }
+  };
 
   return (
     <div className="task-container border p-4">
@@ -79,6 +97,17 @@ function ViewDetails() {
             </tr>
           </tbody>
         </table>
+
+        {/* Countdown Timer */}
+      {deadlineDate ? (
+        <div className="text-center text-red-500 mt-4">
+          <p className="font-semibold">Time Remaining:</p>
+          <Countdown date={deadlineDate} renderer={countdownRenderer} />
+        </div>
+      ) : (
+        <p className="text-center text-gray-500 mt-4">No deadline set</p>
+      )}
+
       </div>
     </div>
   );
