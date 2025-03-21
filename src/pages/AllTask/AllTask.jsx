@@ -13,7 +13,6 @@ function AllTask() {
     queryKey: ["tasks"],
     queryFn: async () => {
       const { data } = await axios.get(apiUrl);
-      console.log(data)
       return data;
     },
   });
